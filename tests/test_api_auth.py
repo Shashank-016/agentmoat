@@ -76,3 +76,48 @@ class TestProtectedRoutesWhenKeyConfigured:
         monkeypatch.setenv("AGENTMOAT_API_KEY", "secret-123")
         assert client.get("/control/status").status_code == 401
         assert client.get("/control/status", headers={"X-API-Key": "secret-123"}).status_code == 200
+
+
+class TestKillSwitchMutatingRoutesAreProtected:
+    """The high-impact POST kill-switch endpoints must require the API key.
+
+    ``test_control_route_is_protected`` only exercises ``GET /control/status``.
+    These are the routes that can actually halt running agents — an
+    unauthenticated ``kill-all`` is a denial-of-service against your own
+    agents — so assert each mutating route is gated, not just the read route.
+    """
+
+    @pytest.fixture(autouse=True)
+    def _reset_default_kill_switch(self):
+        # These tests hit the real mutating endpoints, which trip the
+        # process-wide default KillSwitch singleton. Reset it after each test
+        # so a tripped global flag doesn't leak into the rest of the suite.
+        from agentmoat.control import get_default_kill_switch
+
+        yield
+        get_default_kill_switch().reset()
+
+    @pytest.mark.parametrize(
+        "method,path",
+        [
+            ("post", "/control/kill/session-123"),
+            ("post", "/control/kill-all"),
+            ("post", "/control/revive/session-123"),
+        ],
+    )
+    def test_mutating_route_rejected_without_key(self, client, monkeypatch, method, path):
+        monkeypatch.setenv("AGENTMOAT_API_KEY", "secret-123")
+        assert getattr(client, method)(path).status_code == 401
+
+    @pytest.mark.parametrize(
+        "method,path",
+        [
+            ("post", "/control/kill/session-123"),
+            ("post", "/control/kill-all"),
+            ("post", "/control/revive/session-123"),
+        ],
+    )
+    def test_mutating_route_accepted_with_key(self, client, monkeypatch, method, path):
+        monkeypatch.setenv("AGENTMOAT_API_KEY", "secret-123")
+        resp = getattr(client, method)(path, headers={"X-API-Key": "secret-123"})
+        assert resp.status_code == 200

@@ -5,21 +5,43 @@ build-backend = "hatchling.build"
 [project]
 name = "agentmoat"
 version = "0.1.0"
-description = "Security observability layer for LangGraph and Anthropic SDK AI agents"
+description = "Enforcement and audit layer for AI agents — argument-level tool firewall, tamper-evident audit log, and prompt-injection detection across the Anthropic & OpenAI SDKs, LangGraph, and MCP."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10"
 authors = [{ name = "AgentMoat Contributors" }]
-keywords = ["ai", "agents", "security", "observability", "langgraph", "anthropic", "llm"]
+keywords = [
+    "ai",
+    "agents",
+    "agentic",
+    "security",
+    "ai-security",
+    "llm-security",
+    "guardrails",
+    "prompt-injection",
+    "firewall",
+    "observability",
+    "langgraph",
+    "anthropic",
+    "openai",
+    "mcp",
+    "llm",
+]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
     "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Security",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Monitoring",
+    "Typing :: Typed",
 ]
 
 dependencies = [
@@ -65,7 +87,9 @@ agentmoat = "agentmoat.cli:cli"
 [project.urls]
 Homepage = "https://github.com/Shashank-016/agentmoat"
 Repository = "https://github.com/Shashank-016/agentmoat"
+Documentation = "https://github.com/Shashank-016/agentmoat#readme"
 Issues = "https://github.com/Shashank-016/agentmoat/issues"
+Changelog = "https://github.com/Shashank-016/agentmoat/blob/master/CHANGELOG.md"
 
 [tool.hatch.build.targets.wheel]
 packages = ["agentmoat", "api"]

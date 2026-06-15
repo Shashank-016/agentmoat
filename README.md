@@ -324,19 +324,25 @@ of `AgentMoatException`) — or, for the MCP proxy, returns a JSON-RPC error
 A critical `session_end` event with `flags=["kill:tripped"]` is emitted first,
 so the halt is visible in the audit trail.
 
-The same switch is reachable over HTTP once the audit API is running:
+The same switch is reachable over HTTP once the audit API is running. The
+`/control` routes are behind the **same** `AGENTMOAT_API_KEY` authentication as
+the rest of the audit API (see below) — so set that key, then present it:
 
 ```bash
-curl -X POST http://localhost:8000/control/kill/session-123
-curl -X POST http://localhost:8000/control/kill-all
-curl -X POST http://localhost:8000/control/revive/session-123
-curl http://localhost:8000/control/status
+export AGENTMOAT_API_KEY=secret-123
+curl -X POST http://localhost:8000/control/kill/session-123 -H "X-API-Key: $AGENTMOAT_API_KEY"
+curl -X POST http://localhost:8000/control/kill-all        -H "X-API-Key: $AGENTMOAT_API_KEY"
+curl -X POST http://localhost:8000/control/revive/session-123 -H "X-API-Key: $AGENTMOAT_API_KEY"
+curl http://localhost:8000/control/status                  -H "X-API-Key: $AGENTMOAT_API_KEY"
 ```
 
 These endpoints affect sessions in the API process only — a multi-process
 deployment needs a shared backing store (see Roadmap) for one trip to halt
-every worker. They're also unauthenticated for now; put them behind your own
-auth/network controls before exposing them.
+every worker. Authentication is enforced only when `AGENTMOAT_API_KEY` is set:
+if you leave it unset the API (including the kill switch) stays open for
+backward compatibility and logs a warning — **always set it before exposing the
+API**, so an unauthenticated `kill-all` can't be turned into a denial-of-service
+against your own agents.
 
 ---
 
