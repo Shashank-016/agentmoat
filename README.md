@@ -191,6 +191,33 @@ proxy (checked before the call is forwarded upstream, where blocking actually pr
 
 ---
 
+## OWASP Top 10 for Agentic Applications (2026)
+
+How AgentMoat's controls line up against the
+[OWASP Top 10 for Agentic Applications](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)
+(OWASP GenAI Security Project, published 9 Dec 2025). We're deliberate about not overstating this:
+AgentMoat is a *tool-action enforcement and audit* layer, so it directly **covers** tool misuse and
+is **partial** on most of the rest — shrinking blast radius and adding visibility rather than fully
+preventing the root cause. Full rationale per item is in [`docs/owasp-mapping.md`](docs/owasp-mapping.md).
+
+| OWASP ID | Risk | Status | AgentMoat control |
+|----------|------|--------|-------------------|
+| ASI01 | Agent Goal Hijack | 🟡 Partial | Injection detection (heuristic) + trust provenance; downstream tool calls still enforced |
+| ASI02 | Tool Misuse and Exploitation | 🟢 Covered | Policy engine + argument-level firewall, enforced at SDK wrappers **and** MCP proxy |
+| ASI03 | Identity and Privilege Abuse | 🟡 Partial | Per-agent tool least-privilege; secret redaction in logs (no credential/identity management) |
+| ASI04 | Agentic Supply Chain Vulnerabilities | ⚪ Out of scope | Forensic visibility via audit log only |
+| ASI05 | Unexpected Code Execution | 🟡 Partial | Shell-metachar constraints, deny exec-style tools (no sandbox) |
+| ASI06 | Memory and Context Poisoning | 🟡 Partial | Trust provenance + indirect-injection detection (no memory-store integrity) |
+| ASI07 | Insecure Inter-Agent Communication | 🟡 Partial | Trust propagation + audit of handoffs (no transport auth/encryption) |
+| ASI08 | Cascading Failures | 🟡 Partial | Kill switch, rate limits, bounded state, fail-closed engine |
+| ASI09 | Human-Agent Trust Exploitation | 🟡 Partial | Approval gate with full call context + verifiable audit trail |
+| ASI10 | Rogue Agents | 🟡 Partial | Tool/argument enforcement, trust flags, kill switch, audit log |
+
+**1 covered · 8 partial · 1 out of scope.** AgentMoat is one layer — strongest at constraining and
+recording tool actions — meant to sit alongside identity, sandboxing, and supply-chain controls.
+
+---
+
 ## Response modes
 
 Every guarded client, callback, and the MCP proxy take a `mode`:
