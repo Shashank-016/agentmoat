@@ -32,6 +32,48 @@ defense-in-depth signal layered on top of enforcement that **doesn't depend on c
 prompt** — the controls that actually block an action work whether or not the injection was
 recognized.
 
+## Benchmarks
+
+Measured against **public** datasets, one command (`python benchmarks/run.py`), numbers
+quoted verbatim — including the unflattering ones. Full methodology, caveats, and the exact
+derived policy are in [`benchmarks/`](benchmarks/); machine-readable output with the commit
+hash is in [`benchmarks/results/latest.json`](benchmarks/results/latest.json).
+
+**The moat — argument firewall vs. [AgentDojo](https://github.com/ethz-spylab/agentdojo) (v1, 609 indirect-injection security cases):**
+
+| Metric | Result |
+|--------|--------|
+| Attack catch rate | **86.0%** (524 / 609) |
+| False-positive rate (on 339 benign tool calls) | **0.0%** |
+| Per-call evaluation latency | **p50 0.10 ms · p95 0.13 ms** (excludes the LLM/API call) |
+
+The policy isn't tuned to the attacks: for each AgentDojo task we allow exactly the tools
+its *benign* ground-truth run uses and deny the rest (least-privilege), then measure what
+that happens to block. **Honest decomposition:** all 524 catches come from least-privilege
+*tool policy* denying an out-of-scope tool; AgentMoat's argument-level constraints (path
+traversal, SSRF, shell, sensitive paths) account for **0** here, because AgentDojo's attacks
+are financial/messaging exfiltration, not the filesystem/network class those detectors
+target (they're exercised in `tests/test_constraints.py` instead). The 14% missed are
+injections that reuse a tool the benign task itself uses — semantic misuse the firewall
+doesn't model.
+
+**Defense-in-depth — injection-text detector vs. [deepset/prompt-injections](https://huggingface.co/datasets/deepset/prompt-injections) (263 injection / 399 benign):**
+
+| Path | Catch rate | FPR | Latency |
+|------|-----------|-----|---------|
+| Rule-based (default) | 5.3% (14/263) | 0.0% | p50 0.10 ms |
+| + Embeddings (opt-in) | 5.3% (14/263) | 0.0% | p50 22 ms |
+
+This is the *heuristic* layer, and the numbers say so plainly: regex catches a low 5.3% of
+this diverse, multilingual corpus, and the opt-in embedding pass added **no** catches here
+while costing ~200× the latency. That's exactly why AgentMoat leads with enforcement and
+treats injection detection as a secondary signal — not the thing standing between the model
+and the action.
+
+> Generated with `python benchmarks/run.py --embeddings` against `deepset/prompt-injections`
+> and AgentDojo `v1`. Reproduce with the steps in [`benchmarks/README.md`](benchmarks/README.md);
+> the exact commit is recorded in `results/latest.json`.
+
 ## Install
 
 ```bash

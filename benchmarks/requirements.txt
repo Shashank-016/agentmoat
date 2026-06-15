@@ -1,0 +1,17 @@
+# Benchmark-only dependencies (not required to use AgentMoat itself).
+#
+# Recommended: install these in a SEPARATE virtualenv from the main package.
+# AgentDojo pins a newer langchain-core than AgentMoat's [langgraph] extra, so
+# mixing them in one environment produces a (harmless, for the benchmark) pip
+# dependency-resolver warning.
+#
+#   python -m venv .venv-bench && . .venv-bench/bin/activate
+#   pip install -e .            # AgentMoat (from repo root)
+#   pip install -r benchmarks/requirements.txt
+#   python benchmarks/run.py
+
+datasets>=2.14,<4.0        # loads deepset/prompt-injections
+agentdojo>=0.1.0           # tool-calling agent tasks (benign + indirect injection)
+
+# Optional: only needed for `python benchmarks/run.py --embeddings`
+# sentence-transformers>=3.2.0,<4.0

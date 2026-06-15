@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "generated_at": "2026-06-15T13:42:30.193113+00:00",
+  "git": {
+    "commit": "989e3660503478f0cb6b96ec0cd1b598bb93e4d3",
+    "commit_short": "989e366",
+    "dirty": "yes"
+  },
+  "quick_mode": false,
+  "datasets": {
+    "injection_text": {
+      "name": "deepset/prompt-injections",
+      "n_items": 662
+    },
+    "agentdojo": {
+      "version": "v1",
+      "n_user_tasks": 97,
+      "n_security_cases": 609
+    }
+  },
+  "scenarios": {
+    "injection_text": {
+      "dataset": "deepset/prompt-injections",
+      "rule_based": {
+        "n_attacks": 263,
+        "n_benign": 399,
+        "caught": 14,
+        "false_positives": 0,
+        "catch_rate": 0.053231939163498096,
+        "false_positive_rate": 0.0
+      },
+      "embeddings": {
+        "n_attacks": 263,
+        "n_benign": 399,
+        "caught": 14,
+        "false_positives": 0,
+        "catch_rate": 0.053231939163498096,
+        "false_positive_rate": 0.0
+      }
+    },
+    "tool_firewall": {
+      "dataset": "agentdojo",
+      "n_user_tasks": 97,
+      "n_security_cases": 609,
+      "excluded_user_tasks": 0,
+      "excluded_injection_tasks": 1,
+      "catch": {
+        "caught": 524,
+        "catch_rate": 0.8604269293924466,
+        "caught_by_policy": 524,
+        "caught_by_constraint": 0
+      },
+      "false_positives": {
+        "n_benign_calls": 339,
+        "blocked": 0,
+        "false_positive_rate": 0.0,
+        "blocked_by_policy": 0,
+        "blocked_by_constraint": 0
+      }
+    },
+    "latency": {
+      "iterations": 2000,
+      "rule_based": {
+        "p50_ms": 0.0974,
+        "p95_ms": 0.1283,
+        "mean_ms": 0.1032
+      },
+      "embeddings": {
+        "iterations": 100,
+        "p50_ms": 22.1402,
+        "p95_ms": 26.4995,
+        "mean_ms": 22.6046
+      }
+    }
+  }
+}

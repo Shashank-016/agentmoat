@@ -1,0 +1,573 @@
+agents:
+  banking__user_task_0:
+    allowed_tools:
+    - read_file
+    - send_money
+    denied_tools: []
+  banking__user_task_1:
+    allowed_tools:
+    - get_most_recent_transactions
+    denied_tools: []
+  banking__user_task_10:
+    allowed_tools:
+    - get_most_recent_transactions
+    denied_tools: []
+  banking__user_task_11:
+    allowed_tools:
+    - get_most_recent_transactions
+    - send_money
+    denied_tools: []
+  banking__user_task_12:
+    allowed_tools:
+    - get_scheduled_transactions
+    - read_file
+    - update_scheduled_transaction
+    denied_tools: []
+  banking__user_task_13:
+    allowed_tools:
+    - read_file
+    - update_user_info
+    denied_tools: []
+  banking__user_task_14:
+    allowed_tools:
+    - get_most_recent_transactions
+    - update_password
+    denied_tools: []
+  banking__user_task_15:
+    allowed_tools:
+    - get_most_recent_transactions
+    - get_scheduled_transactions
+    - send_money
+    - update_scheduled_transaction
+    - update_user_info
+    denied_tools: []
+  banking__user_task_2:
+    allowed_tools:
+    - get_scheduled_transactions
+    - read_file
+    - update_scheduled_transaction
+    denied_tools: []
+  banking__user_task_3:
+    allowed_tools:
+    - get_most_recent_transactions
+    - send_money
+    denied_tools: []
+  banking__user_task_4:
+    allowed_tools:
+    - get_most_recent_transactions
+    - send_money
+    denied_tools: []
+  banking__user_task_5:
+    allowed_tools:
+    - get_most_recent_transactions
+    - send_money
+    denied_tools: []
+  banking__user_task_6:
+    allowed_tools:
+    - get_most_recent_transactions
+    - schedule_transaction
+    denied_tools: []
+  banking__user_task_7:
+    allowed_tools:
+    - get_most_recent_transactions
+    denied_tools: []
+  banking__user_task_8:
+    allowed_tools:
+    - get_most_recent_transactions
+    denied_tools: []
+  banking__user_task_9:
+    allowed_tools:
+    - get_most_recent_transactions
+    - update_scheduled_transaction
+    denied_tools: []
+  slack__user_task_0:
+    allowed_tools:
+    - get_webpage
+    denied_tools: []
+  slack__user_task_1:
+    allowed_tools:
+    - get_webpage
+    - read_channel_messages
+    - send_direct_message
+    denied_tools: []
+  slack__user_task_10:
+    allowed_tools:
+    - add_user_to_channel
+    - get_channels
+    - get_users_in_channel
+    denied_tools: []
+  slack__user_task_11:
+    allowed_tools:
+    - add_user_to_channel
+    - get_webpage
+    - invite_user_to_slack
+    - read_inbox
+    denied_tools: []
+  slack__user_task_12:
+    allowed_tools:
+    - get_channels
+    - send_channel_message
+    denied_tools: []
+  slack__user_task_13:
+    allowed_tools:
+    - get_channels
+    - read_channel_messages
+    - send_direct_message
+    denied_tools: []
+  slack__user_task_14:
+    allowed_tools:
+    - get_channels
+    - read_channel_messages
+    - send_direct_message
+    denied_tools: []
+  slack__user_task_15:
+    allowed_tools:
+    - get_webpage
+    - read_channel_messages
+    - send_channel_message
+    denied_tools: []
+  slack__user_task_16:
+    allowed_tools:
+    - get_webpage
+    - invite_user_to_slack
+    - send_direct_message
+    denied_tools: []
+  slack__user_task_17:
+    allowed_tools:
+    - get_webpage
+    - invite_user_to_slack
+    denied_tools: []
+  slack__user_task_18:
+    allowed_tools:
+    - get_channels
+    - get_users_in_channel
+    - get_webpage
+    - read_channel_messages
+    - send_channel_message
+    - send_direct_message
+    denied_tools: []
+  slack__user_task_19:
+    allowed_tools:
+    - add_user_to_channel
+    - get_channels
+    - get_users_in_channel
+    - read_channel_messages
+    - send_channel_message
+    denied_tools: []
+  slack__user_task_2:
+    allowed_tools:
+    - get_webpage
+    - invite_user_to_slack
+    denied_tools: []
+  slack__user_task_20:
+    allowed_tools:
+    - get_webpage
+    - invite_user_to_slack
+    - read_channel_messages
+    - send_channel_message
+    - send_direct_message
+    denied_tools: []
+  slack__user_task_3:
+    allowed_tools:
+    - get_webpage
+    - send_channel_message
+    denied_tools: []
+  slack__user_task_4:
+    allowed_tools:
+    - get_webpage
+    - post_webpage
+    - read_inbox
+    denied_tools: []
+  slack__user_task_5:
+    allowed_tools:
+    - get_channels
+    - get_users_in_channel
+    - send_channel_message
+    denied_tools: []
+  slack__user_task_6:
+    allowed_tools:
+    - get_webpage
+    - read_channel_messages
+    - send_direct_message
+    denied_tools: []
+  slack__user_task_7:
+    allowed_tools:
+    - add_user_to_channel
+    - get_channels
+    denied_tools: []
+  slack__user_task_8:
+    allowed_tools:
+    - get_channels
+    - read_channel_messages
+    - send_channel_message
+    denied_tools: []
+  slack__user_task_9:
+    allowed_tools:
+    - add_user_to_channel
+    - get_channels
+    - get_users_in_channel
+    denied_tools: []
+  travel__user_task_0:
+    allowed_tools:
+    - get_rating_reviews_for_hotels
+    - reserve_hotel
+    denied_tools: []
+  travel__user_task_1:
+    allowed_tools:
+    - create_calendar_event
+    - get_hotels_address
+    - get_hotels_prices
+    - get_rating_reviews_for_hotels
+    denied_tools: []
+  travel__user_task_10:
+    allowed_tools:
+    - check_restaurant_opening_hours
+    - get_all_restaurants_in_city
+    - get_cuisine_type_for_restaurants
+    - get_price_for_restaurants
+    - get_rating_reviews_for_restaurants
+    - get_restaurants_address
+    denied_tools: []
+  travel__user_task_11:
+    allowed_tools:
+    - check_restaurant_opening_hours
+    - get_all_hotels_in_city
+    - get_all_restaurants_in_city
+    - get_cuisine_type_for_restaurants
+    - get_hotels_prices
+    - get_price_for_restaurants
+    - get_rating_reviews_for_hotels
+    - get_rating_reviews_for_restaurants
+    - get_restaurants_address
+    denied_tools: []
+  travel__user_task_12:
+    allowed_tools:
+    - get_all_hotels_in_city
+    - get_all_restaurants_in_city
+    - get_cuisine_type_for_restaurants
+    - get_hotels_address
+    - get_hotels_prices
+    - get_rating_reviews_for_hotels
+    - get_rating_reviews_for_restaurants
+    - get_restaurants_address
+    denied_tools: []
+  travel__user_task_13:
+    allowed_tools:
+    - get_all_car_rental_companies_in_city
+    - get_car_types_available
+    - get_rating_reviews_for_car_rental
+    denied_tools: []
+  travel__user_task_14:
+    allowed_tools:
+    - get_all_car_rental_companies_in_city
+    - get_car_fuel_options
+    - get_car_price_per_day
+    - get_rating_reviews_for_car_rental
+    denied_tools: []
+  travel__user_task_15:
+    allowed_tools:
+    - get_all_car_rental_companies_in_city
+    - get_car_fuel_options
+    - get_car_price_per_day
+    - get_car_types_available
+    - get_rating_reviews_for_car_rental
+    denied_tools: []
+  travel__user_task_16:
+    allowed_tools:
+    - get_all_car_rental_companies_in_city
+    - get_car_price_per_day
+    - get_flight_information
+    - get_rating_reviews_for_car_rental
+    denied_tools: []
+  travel__user_task_17:
+    allowed_tools:
+    - get_all_car_rental_companies_in_city
+    - get_all_hotels_in_city
+    - get_all_restaurants_in_city
+    - get_car_price_per_day
+    - get_hotels_prices
+    - get_price_for_restaurants
+    - get_rating_reviews_for_car_rental
+    - get_rating_reviews_for_hotels
+    - get_rating_reviews_for_restaurants
+    denied_tools: []
+  travel__user_task_18:
+    allowed_tools:
+    - check_restaurant_opening_hours
+    - get_all_car_rental_companies_in_city
+    - get_all_restaurants_in_city
+    - get_car_price_per_day
+    - get_cuisine_type_for_restaurants
+    - get_price_for_restaurants
+    - get_rating_reviews_for_car_rental
+    - get_rating_reviews_for_restaurants
+    denied_tools: []
+  travel__user_task_19:
+    allowed_tools:
+    - get_all_car_rental_companies_in_city
+    - get_all_hotels_in_city
+    - get_all_restaurants_in_city
+    - get_car_price_per_day
+    - get_hotels_prices
+    - get_price_for_restaurants
+    - get_rating_reviews_for_car_rental
+    - get_rating_reviews_for_hotels
+    - get_rating_reviews_for_restaurants
+    denied_tools: []
+  travel__user_task_2:
+    allowed_tools:
+    - get_all_restaurants_in_city
+    - get_cuisine_type_for_restaurants
+    - get_price_for_restaurants
+    - get_rating_reviews_for_restaurants
+    denied_tools: []
+  travel__user_task_3:
+    allowed_tools:
+    - get_all_hotels_in_city
+    - get_hotels_address
+    - get_hotels_prices
+    - get_rating_reviews_for_hotels
+    - send_email
+    denied_tools: []
+  travel__user_task_4:
+    allowed_tools:
+    - create_calendar_event
+    - get_all_hotels_in_city
+    - get_hotels_address
+    - get_hotels_prices
+    - get_rating_reviews_for_hotels
+    denied_tools: []
+  travel__user_task_5:
+    allowed_tools:
+    - get_all_hotels_in_city
+    - get_hotels_address
+    - get_hotels_prices
+    - get_rating_reviews_for_hotels
+    denied_tools: []
+  travel__user_task_6:
+    allowed_tools:
+    - get_all_hotels_in_city
+    - get_hotels_prices
+    - get_rating_reviews_for_hotels
+    denied_tools: []
+  travel__user_task_7:
+    allowed_tools:
+    - create_calendar_event
+    - get_all_restaurants_in_city
+    - get_cuisine_type_for_restaurants
+    - get_rating_reviews_for_restaurants
+    - get_restaurants_address
+    denied_tools: []
+  travel__user_task_8:
+    allowed_tools:
+    - create_calendar_event
+    - get_all_restaurants_in_city
+    - get_dietary_restrictions_for_all_restaurants
+    - get_price_for_restaurants
+    - get_rating_reviews_for_restaurants
+    - get_restaurants_address
+    denied_tools: []
+  travel__user_task_9:
+    allowed_tools:
+    - check_restaurant_opening_hours
+    - get_all_restaurants_in_city
+    - get_cuisine_type_for_restaurants
+    - get_rating_reviews_for_restaurants
+    - get_restaurants_address
+    denied_tools: []
+  workspace__user_task_0:
+    allowed_tools:
+    - search_calendar_events
+    denied_tools: []
+  workspace__user_task_1:
+    allowed_tools:
+    - get_day_calendar_events
+    denied_tools: []
+  workspace__user_task_10:
+    allowed_tools:
+    - get_current_day
+    - get_day_calendar_events
+    denied_tools: []
+  workspace__user_task_11:
+    allowed_tools:
+    - get_day_calendar_events
+    denied_tools: []
+  workspace__user_task_12:
+    allowed_tools:
+    - create_calendar_event
+    - get_day_calendar_events
+    denied_tools: []
+  workspace__user_task_13:
+    allowed_tools:
+    - append_to_file
+    - search_emails
+    - search_files_by_filename
+    - send_email
+    denied_tools: []
+  workspace__user_task_14:
+    allowed_tools:
+    - search_emails
+    denied_tools: []
+  workspace__user_task_15:
+    allowed_tools:
+    - create_calendar_event
+    - search_emails
+    denied_tools: []
+  workspace__user_task_16:
+    allowed_tools:
+    - search_emails
+    denied_tools: []
+  workspace__user_task_17:
+    allowed_tools:
+    - search_emails
+    denied_tools: []
+  workspace__user_task_18:
+    allowed_tools:
+    - create_calendar_event
+    - search_emails
+    denied_tools: []
+  workspace__user_task_19:
+    allowed_tools:
+    - append_to_file
+    - get_day_calendar_events
+    - search_emails
+    - search_files_by_filename
+    - send_email
+    denied_tools: []
+  workspace__user_task_2:
+    allowed_tools:
+    - get_current_day
+    - search_calendar_events
+    denied_tools: []
+  workspace__user_task_20:
+    allowed_tools:
+    - create_calendar_event
+    - get_day_calendar_events
+    - search_contacts_by_name
+    denied_tools: []
+  workspace__user_task_21:
+    allowed_tools:
+    - create_calendar_event
+    - get_day_calendar_events
+    - search_calendar_events
+    denied_tools: []
+  workspace__user_task_22:
+    allowed_tools:
+    - search_emails
+    denied_tools: []
+  workspace__user_task_23:
+    allowed_tools:
+    - get_day_calendar_events
+    - search_emails
+    denied_tools: []
+  workspace__user_task_24:
+    allowed_tools:
+    - get_unread_emails
+    denied_tools: []
+  workspace__user_task_25:
+    allowed_tools:
+    - search_files
+    - send_email
+    denied_tools: []
+  workspace__user_task_26:
+    allowed_tools:
+    - list_files
+    denied_tools: []
+  workspace__user_task_27:
+    allowed_tools:
+    - list_files
+    denied_tools: []
+  workspace__user_task_28:
+    allowed_tools:
+    - search_files_by_filename
+    denied_tools: []
+  workspace__user_task_29:
+    allowed_tools:
+    - append_to_file
+    - search_files_by_filename
+    denied_tools: []
+  workspace__user_task_3:
+    allowed_tools:
+    - search_calendar_events
+    denied_tools: []
+  workspace__user_task_30:
+    allowed_tools:
+    - search_files
+    denied_tools: []
+  workspace__user_task_31:
+    allowed_tools:
+    - create_file
+    - search_files
+    denied_tools: []
+  workspace__user_task_32:
+    allowed_tools:
+    - create_file
+    - search_files
+    - share_file
+    denied_tools: []
+  workspace__user_task_33:
+    allowed_tools:
+    - search_files_by_filename
+    - send_email
+    denied_tools: []
+  workspace__user_task_34:
+    allowed_tools:
+    - append_to_file
+    - search_files
+    - search_files_by_filename
+    denied_tools: []
+  workspace__user_task_35:
+    allowed_tools:
+    - delete_file
+    - list_files
+    denied_tools: []
+  workspace__user_task_36:
+    allowed_tools:
+    - create_file
+    - search_files
+    denied_tools: []
+  workspace__user_task_37:
+    allowed_tools:
+    - create_file
+    - search_files
+    - share_file
+    denied_tools: []
+  workspace__user_task_38:
+    allowed_tools:
+    - delete_file
+    - list_files
+    denied_tools: []
+  workspace__user_task_39:
+    allowed_tools:
+    - search_emails
+    denied_tools: []
+  workspace__user_task_4:
+    allowed_tools:
+    - create_calendar_event
+    - get_day_calendar_events
+    denied_tools: []
+  workspace__user_task_5:
+    allowed_tools:
+    - get_day_calendar_events
+    denied_tools: []
+  workspace__user_task_6:
+    allowed_tools:
+    - create_calendar_event
+    - get_day_calendar_events
+    denied_tools: []
+  workspace__user_task_7:
+    allowed_tools:
+    - reschedule_calendar_event
+    - search_calendar_events
+    denied_tools: []
+  workspace__user_task_8:
+    allowed_tools:
+    - add_calendar_event_participants
+    - search_calendar_events
+    denied_tools: []
+  workspace__user_task_9:
+    allowed_tools:
+    - create_calendar_event
+    - search_calendar_events
+    denied_tools: []
+version: '1'
