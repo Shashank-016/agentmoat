@@ -5,20 +5,32 @@
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![MCP](https://img.shields.io/badge/MCP-compatible-6e56cf.svg)](https://modelcontextprotocol.io/)
 
-**A security layer for AI agents.** AgentMoat detects prompt injection, firewalls dangerous tool
-calls, scores cross-agent trust, and keeps a tamper-evident audit trail — across the Anthropic &
-OpenAI SDKs, LangGraph, and any MCP server. Drop it in with a one-line change; no rewrite of your
-agent logic.
+**An enforcement layer for AI agents.** AgentMoat sits between your agent's decisions and the
+actions it takes — inspecting tool-call arguments and blocking dangerous ones before they run,
+with a verifiable audit trail and an instant kill switch. Works across the Anthropic & OpenAI
+SDKs, LangGraph, and any MCP server; one line to drop in.
 
 ![AgentMoat blocking a prompt-injection attack at the tool layer](docs/demo.gif)
 
 ## Why
 
-Autonomous agents take actions — they read documents, call tools, write files, hit APIs. That
-turns a prompt-injection string in a web page or a tool result into a way to *make the agent do
-something*, not just say something. Most teams have no visibility into what their agents are
-doing and no enforcement layer between the model's decision and the action. AgentMoat is that
-layer.
+Autonomous agents don't just talk — they *act*: read documents, call tools, write files, hit
+APIs. The dangerous moment isn't the model saying something wrong, it's the model *doing*
+something wrong — and by the time a bad tool call reaches your filesystem or an internal API,
+detecting the prompt that caused it is too late.
+
+AgentMoat is the enforcement layer in between. It checks the **actual arguments** of every tool
+call against your policy — path allow/deny lists, SSRF and path-traversal guards, rate limits —
+and blocks the call *before it runs*. It records every decision in a **hash-chained audit log**
+that can be independently verified line-by-line. It tracks how far each session has **drifted
+from trusted input** across agent hops. And it gives you a **one-call kill switch** for any
+session, or all of them.
+
+Catching the injection that *tried* to trigger a bad action is useful, but it's a probabilistic
+heuristic attackers paraphrase around. So AgentMoat treats injection detection as one
+defense-in-depth signal layered on top of enforcement that **doesn't depend on catching the
+prompt** — the controls that actually block an action work whether or not the injection was
+recognized.
 
 ## Install
 
