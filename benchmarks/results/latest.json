@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "generated_at": "2026-06-15T13:42:30.193113+00:00",
+  "generated_at": "2026-06-15T13:46:31.405211+00:00",
   "git": {
-    "commit": "989e3660503478f0cb6b96ec0cd1b598bb93e4d3",
-    "commit_short": "989e366",
-    "dirty": "yes"
+    "commit": "8fe14af3727a3b4337f0438aef3f0a27df8604e1",
+    "commit_short": "8fe14af",
+    "dirty": "no"
   },
   "quick_mode": false,
   "datasets": {
@@ -61,15 +61,15 @@
     "latency": {
       "iterations": 2000,
       "rule_based": {
-        "p50_ms": 0.0974,
-        "p95_ms": 0.1283,
-        "mean_ms": 0.1032
+        "p50_ms": 0.0971,
+        "p95_ms": 0.1724,
+        "mean_ms": 0.108
       },
       "embeddings": {
         "iterations": 100,
-        "p50_ms": 22.1402,
-        "p95_ms": 26.4995,
-        "mean_ms": 22.6046
+        "p50_ms": 22.7773,
+        "p95_ms": 25.5271,
+        "mean_ms": 22.859
       }
     }
   }
