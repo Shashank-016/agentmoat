@@ -462,6 +462,32 @@ When trust drops below 0.5, any attempt to call a sensitive tool (write, execute
 
 ---
 
+## How AgentMoat compares
+
+The agent-guardrail space is active and several of these projects are more mature or better
+funded than AgentMoat. They mostly solve a *different* part of the problem — detection quality,
+output validation, conversational rails — and AgentMoat is complementary to all of them.
+AgentMoat's specific angle is **deterministic enforcement at the tool boundary**, delivered as
+SDK wrappers *and* a transparent MCP proxy in one package, with a hash-chained tamper-evident
+audit log, a human-in-the-loop interactive mode, and no cloud dependency (the default rule path
+runs fully local, no external model calls).
+
+| Project | Primary focus | Does better than AgentMoat | Where AgentMoat differs |
+|---------|---------------|----------------------------|-------------------------|
+| **[LlamaFirewall](https://github.com/meta-llama/PurpleLlama) (Meta)** | ML-based guardrails — prompt-injection/jailbreak detection (PromptGuard), agent-alignment auditing (AlignmentCheck), insecure-code scanning (CodeShield) | Far stronger, model-based detection and alignment auditing; backed by Meta | AgentMoat's boundary is deterministic tool-argument enforcement, not detection; ships a transparent MCP proxy and tamper-evident audit log |
+| **[NeMo Guardrails](https://github.com/NVIDIA/NeMo-Guardrails) (NVIDIA)** | Programmable conversational rails via the Colang DSL — topical, dialog, input/output rails | Mature, broad integrations, rich conversation-flow control; NVIDIA-backed | AgentMoat enforces at the tool-call layer (arguments, policy) rather than the conversation layer, and works transparently over MCP with no app rewrite |
+| **[Guardrails AI](https://github.com/guardrails-ai/guardrails)** | LLM output validation — a large hub of validators (structure, PII, toxicity, format) | Much larger validator ecosystem; strong structured-output/validation story | AgentMoat targets *actions* (what a tool call does) rather than validating model text output, and adds MCP-proxy enforcement + audit integrity |
+| **[Invariant Labs](https://github.com/invariantlabs-ai)** | Agent security tooling — a policy/analysis language for agent traces and MCP-focused security (e.g. MCP scanning, a guardrailing gateway) | Deeper trace-analysis policy language and dedicated MCP vulnerability scanning; the closest overlap on MCP | AgentMoat bundles SDK wrappers + proxy enforcement + hash-chained audit + interactive approval in one local package with no cloud/Explorer component |
+
+Honest summary: if you want the strongest *detection*, pair AgentMoat with LlamaFirewall's
+models; if you need conversational rails, NeMo is purpose-built; for output-schema validation,
+Guardrails AI has the ecosystem. AgentMoat's bet is that the durable security control is
+*stopping the action at the tool boundary and being able to prove what happened* — which is why
+it leads with enforcement and a verifiable audit log rather than detection. Capabilities of the
+other projects move fast; check their current docs before relying on any specific feature above.
+
+---
+
 ## Roadmap
 
 - [x] **OpenAI SDK support** — `GuardedOpenAI` / `AsyncGuardedOpenAI` wrap `openai.OpenAI` / `AsyncOpenAI`
