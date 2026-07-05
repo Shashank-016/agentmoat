@@ -169,8 +169,17 @@ def _print_summary(results: dict) -> None:
     if "embeddings" in inj:
         eb = inj["embeddings"]
         print(
-            f"  embeddings   catch {_fmt_pct(eb['catch_rate'])}  "
-            f"FPR {_fmt_pct(eb['false_positive_rate'])}"
+            f"  embeddings   combined catch {_fmt_pct(eb['combined_catch_rate'])}  "
+            f"FPR {_fmt_pct(eb['false_positives']['false_positive_rate'])}"
+        )
+        print(
+            f"    attribution: rules-only={eb['caught_by_rules_only']}  "
+            f"embeddings-only={eb['caught_by_embeddings_only']}  both={eb['caught_by_both']}"
+        )
+        print(
+            f"    embeddings added {eb['embeddings_added_catches']} catch(es) the rules missed; "
+            f"max attack similarity {eb['max_attack_similarity']} "
+            f"vs threshold {eb['embedding_threshold']}"
         )
 
     print("\nArgument firewall (least-privilege policy + always-on constraints)")

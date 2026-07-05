@@ -226,7 +226,7 @@ class InjectionDetector:
         embedding_threshold: float = 0.82,
     ) -> None:
         self._use_embeddings = use_embeddings
-        self._threshold = embedding_threshold
+        self.embedding_threshold = embedding_threshold
         self._model = None
         self._attack_embeddings = None
 
@@ -291,7 +291,7 @@ class InjectionDetector:
             max_idx = int(np.argmax(similarities))
             max_sim = float(similarities[max_idx])
 
-            if max_sim >= self._threshold:
+            if max_sim >= self.embedding_threshold:
                 results.append(
                     InjectionMatch(
                         pattern_name="embedding_similarity",
@@ -305,6 +305,28 @@ class InjectionDetector:
                 break  # One embedding flag per scan is sufficient.
 
         return results
+
+    def max_attack_similarity(self, text: str) -> float | None:
+        """Return the highest cosine similarity of ``text`` to any known attack phrase.
+
+        Unlike :meth:`scan`, this reports the raw maximum similarity *regardless*
+        of the flag threshold — so a benchmark can log how close the embedding
+        pass came even when it did not fire, making a "embeddings added zero
+        catches" claim verifiable rather than asserted. Returns ``None`` when the
+        embedding model is unavailable (``use_embeddings=False`` or not installed).
+        """
+        if not self._use_embeddings or self._model is None:
+            return None
+
+        import numpy as np
+
+        chunks = [text[i : i + 2000] for i in range(0, len(text), 2000)] or [text]
+        best = 0.0
+        for chunk in chunks:
+            embedding = self._model.encode([chunk], normalize_embeddings=True)
+            similarities = (embedding @ self._attack_embeddings.T)[0]
+            best = max(best, float(np.max(similarities)))
+        return best
 
     def scan_messages(self, messages: list[dict]) -> list[InjectionMatch]:
         """Scan an Anthropic-style message array for injection attempts.
