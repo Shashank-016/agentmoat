@@ -217,7 +217,15 @@ proxy (checked before the call is forwarded upstream, where blocking actually pr
 
 ---
 
-## What Gets Detected
+## What Gets Detected (defense-in-depth signal)
+
+The table below is the **detection** layer — heuristics that flag suspicious input. Treat it
+as a signal, **not** the security boundary. Regex and embedding detection are pattern-based and
+bypassable (base64, homoglyphs, zero-width characters, paraphrasing, other languages — see
+[THREAT_MODEL.md](THREAT_MODEL.md)), so a determined injection *will* eventually slip past them.
+The boundary that actually stops a bad action is the deterministic tool-argument enforcement
+above (allow/deny policy + argument constraints), which blocks the call whether or not detection
+recognized the prompt that produced it.
 
 | Threat | Detection Method | Default Severity |
 |--------|-----------------|-----------------|
