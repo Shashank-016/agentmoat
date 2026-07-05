@@ -181,6 +181,18 @@ def _print_summary(results: dict) -> None:
         f"FPR {_fmt_pct(rb['false_positive_rate'])}  "
         f"(attacks={rb['n_attacks']}, benign={rb['n_benign']})"
     )
+    lang = rb.get("english_vs_non_english")
+    if lang:
+        en = lang["english"]
+        non = lang["non_english"]
+        print(
+            f"    English      catch {_fmt_pct(en['catch_rate'])}  "
+            f"(attacks={en['n_attacks']}, benign={en['n_benign']})"
+        )
+        print(
+            f"    non-English  catch {_fmt_pct(non['catch_rate'])}  "
+            f"(attacks={non['n_attacks']}, benign={non['n_benign']})"
+        )
     if "embeddings" in inj:
         eb = inj["embeddings"]
         print(

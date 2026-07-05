@@ -99,6 +99,38 @@ def test_zero_embedding_catches_is_still_verifiable():
     assert emb["max_attack_similarity"] is not None  # observable, not hidden
 
 
+def _fake_lang(text: str) -> str:
+    if text.startswith("EN"):
+        return "en"
+    if text.startswith("DE"):
+        return "de"
+    return "unknown"
+
+
+def test_language_breakdown_splits_catch_rate_and_fpr():
+    items = [
+        InjectionTextItem("EN RULE english attack the regex catches", 1),
+        InjectionTextItem("EN english attack the regex misses", 1),
+        InjectionTextItem("DE german attack the regex misses", 1),
+        InjectionTextItem("EN perfectly clean benign text", 0),
+    ]
+    res = injection_text.run(items, detector_factory=_StubDetector, lang_detector=_fake_lang)
+    rb = res["rule_based"]
+
+    by = rb["by_language"]
+    assert by["en"]["n_attacks"] == 2
+    assert by["en"]["caught"] == 1
+    assert by["en"]["catch_rate"] == 0.5
+    assert by["en"]["n_benign"] == 1
+    assert by["de"]["n_attacks"] == 1
+    assert by["de"]["catch_rate"] == 0.0
+
+    ev = rb["english_vs_non_english"]
+    assert ev["english"]["catch_rate"] == 0.5
+    assert ev["non_english"]["n_attacks"] == 1
+    assert ev["non_english"]["catch_rate"] == 0.0
+
+
 # ---------------------------------------------------------------------------
 # Real-model integration check (skips cleanly if the model is unavailable).
 # ---------------------------------------------------------------------------
