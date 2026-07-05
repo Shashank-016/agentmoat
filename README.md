@@ -48,36 +48,59 @@ python benchmarks/run.py                        # add --embeddings for the embed
 # pip install "agentmoat[benchmarks,embeddings]" && python benchmarks/run.py --embeddings
 ```
 
-**The moat — argument firewall vs. [AgentDojo](https://github.com/ethz-spylab/agentdojo) (v1, 609 indirect-injection security cases):**
+**The moat — tool firewall evaluated against [AgentDojo](https://github.com/ethz-spylab/agentdojo) attack cases (v1, 609 indirect-injection security cases):**
+
+This is an **offline replay**: each AgentDojo attack task's declared tool-call sequence is
+checked statically against the firewall layer. We do *not* run live agents or measure
+AgentDojo's task-utility metric — so read this as "evaluated against AgentDojo's attack cases",
+not "benchmarked on AgentDojo".
 
 | Metric | Result |
 |--------|--------|
 | Attack catch rate | **86.0%** (524 / 609) |
+| &nbsp;&nbsp;— by least-privilege tool policy (only) | 524 |
+| &nbsp;&nbsp;— by argument constraints (only) | 0 |
+| &nbsp;&nbsp;— by both | 0 |
 | False-positive rate (on 339 benign tool calls) | **0.0%** |
-| Per-call evaluation latency | **p50 0.10 ms · p95 0.13 ms** (excludes the LLM/API call) |
+| Per-call evaluation latency | **p50 0.10 ms · p95 0.23 ms** (excludes the LLM/API call) |
 
-The policy isn't tuned to the attacks: for each AgentDojo task we allow exactly the tools
-its *benign* ground-truth run uses and deny the rest (least-privilege), then measure what
-that happens to block. **Honest decomposition:** all 524 catches come from least-privilege
-*tool policy* denying an out-of-scope tool; AgentMoat's argument-level constraints (path
-traversal, SSRF, shell, sensitive paths) account for **0** here, because AgentDojo's attacks
-are financial/messaging exfiltration, not the filesystem/network class those detectors
-target (they're exercised in `tests/test_constraints.py` instead). The 14% missed are
-injections that reuse a tool the benign task itself uses — semantic misuse the firewall
-doesn't model.
+For each user task we allow exactly the tools its *benign* ground-truth run uses and deny the
+rest, then measure what that blocks on the paired attacks. Because the policy is derived from
+the same task suite it's later measured on, the benign-call false-positive rate is favorable
+**by construction** — read the 0.0% FPR as *"simulates a well-configured least-privilege
+deployment"*, not a claim about arbitrary hand-written policies.
 
-**Defense-in-depth — injection-text detector vs. [deepset/prompt-injections](https://huggingface.co/datasets/deepset/prompt-injections) (263 injection / 399 benign):**
+**Constraint contribution, as measured: 0.** All 524 catches come from least-privilege tool
+policy denying an out-of-scope tool; the always-on argument constraints (path traversal, SSRF,
+shell, sensitive paths) fire on none of these cases, because AgentDojo's attacks are
+financial/messaging exfiltration, not the filesystem/network class those detectors target
+(they're exercised in `tests/test_constraints.py` instead). The 85 uncaught cases (14%) all
+reuse a tool the benign task itself uses — semantic misuse the firewall doesn't model — and
+break down as **41 financial-transaction, 16 send/message, 16 write, 12 read**
+(full list in [`benchmarks/results/uncaught_cases.json`](benchmarks/results/uncaught_cases.json)).
+
+**Defense-in-depth, *not* the security boundary — injection-text detector vs. [deepset/prompt-injections](https://huggingface.co/datasets/deepset/prompt-injections) (263 injection / 399 benign):**
 
 | Path | Catch rate | FPR | Latency |
 |------|-----------|-----|---------|
-| Rule-based (default) | 5.3% (14/263) | 0.0% | p50 0.10 ms |
-| + Embeddings (opt-in) | 5.3% (14/263) | 0.0% | p50 22 ms |
+| Rule-based — overall | 5.3% (14 / 263) | 0.0% | p50 0.10 ms |
+| Rule-based — English only | 8.9% (14 / 157) | 0.0% | — |
+| Rule-based — non-English | 0.0% (0 / 106) | 0.0% | — |
+| + Embeddings (opt-in) | **+0** catches over rules | 0.0% | p50 27 ms |
 
-This is the *heuristic* layer, and the numbers say so plainly: regex catches a low 5.3% of
-this diverse, multilingual corpus, and the opt-in embedding pass added **no** catches here
-while costing ~200× the latency. That's exactly why AgentMoat leads with enforcement and
-treats injection detection as a secondary signal — not the thing standing between the model
-and the action.
+The rule patterns are English-only, so splitting by detected language (via `langdetect`) tells
+the real story: **8.9% on English attacks, 0.0% on the non-English ~40% of the corpus** — the
+English regexes cannot see non-English injection at all. The opt-in embedding pass added
+**zero** catches over the rules here — the highest cosine similarity any attack reached against
+a known-attack phrase was **0.629, below the 0.82 flag threshold** — while costing hundreds of
+times the latency (p50 27 ms vs 0.10 ms).
+
+These unflattering numbers are in the README on purpose, because they *are* the thesis:
+**regex/embedding injection detection is bypassable and is not the security boundary.** It's a
+cheap signal layered on top; the boundary that actually stops a bad action is the deterministic
+tool-argument enforcement above, which blocks the call whether or not detection recognized the
+prompt. See [THREAT_MODEL.md](THREAT_MODEL.md) for exactly where detection helps and where it
+doesn't.
 
 > Generated with `python benchmarks/run.py --embeddings` against `deepset/prompt-injections`
 > and AgentDojo `v1`. Reproduce with the steps in [`benchmarks/README.md`](benchmarks/README.md);
@@ -97,8 +120,11 @@ sits in front of (which it does not change). Measured with `python benchmarks/ov
 The MCP-proxy row is the delta between a full proxied `tools/call` (request parse + injection +
 argument constraints + tool policy + trust + event emission) and a direct upstream call, using a
 zero-cost mock upstream — so it reflects AgentMoat's interception cost alone, not real
-tool-server or transport latency. Numbers measured on an AMD Ryzen 5 5600H (CPython 3.10,
-Windows); they exclude the LLM/API call and the ~80 MB optional embedding model (off by default).
+tool-server or transport latency. The injection-scan figure uses benign inputs, which are the
+regex **worst case** (every pattern is scanned and none short-circuits on an early match), so the
+latency is conservative — a real injection tends to match sooner and cost less. Numbers measured
+on an AMD Ryzen 5 5600H (CPython 3.10, Windows); they exclude the LLM/API call and the ~80 MB
+optional embedding model (off by default).
 
 ## Install
 
