@@ -6,6 +6,36 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+## [0.1.1]
+
+### Added
+- **Public-dataset benchmark suite:** one-command `python benchmarks/run.py` measuring the
+  argument firewall against AgentDojo and the injection-text detector against
+  `deepset/prompt-injections`, with machine-readable `benchmarks/results/latest.json`.
+- **Overhead micro-benchmark:** `benchmarks/overhead.py` reporting injection-scan,
+  argument-constraint, and end-to-end MCP-proxy per-call latency, summarized in the README.
+- **OWASP Top 10 for Agentic Applications (2026) mapping** in the README and
+  `docs/owasp-mapping.md`.
+- **Documentation:** README sections for secret/PII redaction, a "How AgentMoat compares"
+  comparison against other agent-guardrail projects, and measured performance overhead.
+
+### Changed
+- **README now leads with deterministic tool-boundary enforcement** as the security boundary,
+  with regex/embedding injection detection presented as a bypassable defense-in-depth signal.
+- **Packaging metadata:** enforcement-first project description, real maintainer name, and the
+  version bumped to 0.1.1 across `pyproject.toml`, `agentmoat.__version__`, and the API app.
+
+### Security
+- **Kill-switch `/control` routes are gated by `AGENTMOAT_API_KEY`** like the rest of the audit
+  API, with regression tests asserting every mutating endpoint (`kill`, `kill-all`, `revive`)
+  rejects unauthenticated callers.
+
+### Fixed
+- `EventBus.__bool__` always returns `True`, so an empty bus is never mistaken for absent
+  (falsy-when-empty footgun).
+
+## [0.1.0] - 2026-06-10
+
 ### Added
 - **Core instrumentation:** `GuardedClient` / `AsyncGuardedClient` (drop-in wrappers for the
   Anthropic SDK, sync + async + streaming), `AgentMoatCallback` for LangGraph, and a unified
@@ -32,4 +62,6 @@ All notable changes to this project are documented here. The format is based on
 - Secret/PII redaction before persistence.
 - Timezone-aware timestamps throughout.
 
-[Unreleased]: https://github.com/Shashank-016/agentmoat/commits/master
+[Unreleased]: https://github.com/Shashank-016/agentmoat/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/Shashank-016/agentmoat/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/Shashank-016/agentmoat/releases/tag/v0.1.0
