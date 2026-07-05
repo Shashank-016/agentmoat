@@ -109,7 +109,7 @@ app = FastAPI(
         "Real-time security observability for AI agents. "
         "Query SecurityEvents emitted by GuardedClient and AgentMoatCallback instrumentation."
     ),
-    version="0.1.0",
+    version="0.1.1",
     lifespan=lifespan,
 )
 

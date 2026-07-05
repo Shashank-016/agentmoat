@@ -38,7 +38,7 @@ from .events import SecurityEvent
 from .openai_client import AsyncGuardedOpenAI, GuardedOpenAI
 from .store import EventStore
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __all__ = [
     "GuardedClient",
     "AsyncGuardedClient",

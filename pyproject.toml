@@ -4,12 +4,12 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agentmoat"
-version = "0.1.0"
-description = "Enforcement and audit layer for AI agents — argument-level tool firewall, tamper-evident audit log, and prompt-injection detection across the Anthropic & OpenAI SDKs, LangGraph, and MCP."
+version = "0.1.1"
+description = "Enforcement and audit layer for AI agents — argument-level tool firewall, trust scoring, tamper-evident audit log, and prompt-injection detection across the Anthropic & OpenAI SDKs, LangGraph, and MCP."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10"
-authors = [{ name = "AgentMoat Contributors" }]
+authors = [{ name = "Shashank Nambiar" }]
 keywords = [
     "ai",
     "agents",
