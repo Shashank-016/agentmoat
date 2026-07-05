@@ -34,10 +34,19 @@ recognized.
 
 ## Benchmarks
 
-Measured against **public** datasets, one command (`python benchmarks/run.py`), numbers
-quoted verbatim — including the unflattering ones. Full methodology, caveats, and the exact
-derived policy are in [`benchmarks/`](benchmarks/); machine-readable output with the commit
-hash is in [`benchmarks/results/latest.json`](benchmarks/results/latest.json).
+Measured against **public** datasets, one command, numbers quoted verbatim — including the
+unflattering ones. Full methodology, caveats, and the exact derived policy are in
+[`benchmarks/`](benchmarks/); machine-readable output with the commit hash is in
+[`benchmarks/results/latest.json`](benchmarks/results/latest.json).
+
+The benchmark dependencies are kept out of the base install — install the extra, then run:
+
+```bash
+pip install "agentmoat[benchmarks]"            # datasets, agentdojo, langdetect
+python benchmarks/run.py                        # add --embeddings for the embedding rows
+# the embedding pass also needs the [embeddings] extra:
+# pip install "agentmoat[benchmarks,embeddings]" && python benchmarks/run.py --embeddings
+```
 
 **The moat — argument firewall vs. [AgentDojo](https://github.com/ethz-spylab/agentdojo) (v1, 609 indirect-injection security cases):**
 
