@@ -38,6 +38,7 @@ from benchmarks.scenarios import injection_text, latency, tool_firewall  # noqa:
 RESULTS_DIR = os.path.join(_HERE, "results")
 POLICY_PATH = os.path.join(_HERE, "derived_policy.yaml")
 RESULTS_PATH = os.path.join(RESULTS_DIR, "latest.json")
+UNCAUGHT_PATH = os.path.join(RESULTS_DIR, "uncaught_cases.json")
 
 
 def _git(*args: str) -> str:
@@ -110,6 +111,9 @@ def main() -> int:
     with open(POLICY_PATH, "w", encoding="utf-8") as fh:
         yaml.safe_dump(adj.derived_policy(), fh, sort_keys=True)
     firewall_result = tool_firewall.run(adj, POLICY_PATH)
+    # Keep latest.json compact: the full per-case list goes to its own file; the
+    # category summary (firewall_result["uncaught"]) stays in latest.json.
+    uncaught_cases = firewall_result.pop("uncaught_cases", [])
 
     # --- Latency scenario ---------------------------------------------------
     print("[3/3] Per-call evaluation latency ...")
@@ -144,9 +148,20 @@ def main() -> int:
     with open(RESULTS_PATH, "w", encoding="utf-8") as fh:
         json.dump(results, fh, indent=2)
 
+    uncaught_payload = {
+        "generated_at": results["generated_at"],
+        "git": commit,
+        "n_uncaught": firewall_result["uncaught"]["n_uncaught"],
+        "by_category": firewall_result["uncaught"]["by_category"],
+        "cases": uncaught_cases,
+    }
+    with open(UNCAUGHT_PATH, "w", encoding="utf-8") as fh:
+        json.dump(uncaught_payload, fh, indent=2)
+
     _print_summary(results)
     print(f"\nWrote {os.path.relpath(RESULTS_PATH, _ROOT)}")
     print(f"Wrote {os.path.relpath(POLICY_PATH, _ROOT)} (exact policy used above)")
+    print(f"Wrote {os.path.relpath(UNCAUGHT_PATH, _ROOT)} ({len(uncaught_cases)} uncaught cases)")
     return 0
 
 
@@ -198,6 +213,11 @@ def _print_summary(results: dict) -> None:
         f"({fp['blocked']}/{fp['n_benign_calls']} benign calls; "
         f"policy={fp['blocked_by_policy']}, constraint={fp['blocked_by_constraint']})"
     )
+    uncaught = fw.get("uncaught")
+    if uncaught:
+        print(f"  uncaught     {uncaught['n_uncaught']} cases slipped through, by category:")
+        for category, count in uncaught["by_category"].items():
+            print(f"    - {category}: {count}")
 
     print("\nPer-call evaluation latency (engine work, excludes LLM/API call)")
     lrb = lat["rule_based"]

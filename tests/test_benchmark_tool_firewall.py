@@ -74,6 +74,23 @@ def test_disjoint_attribution(policy_path):
     assert c["caught_total_constraint"] == 2
 
 
+def test_uncaught_cases_are_recorded_with_tool_and_reason(policy_path):
+    result = tool_firewall.run(_data(), policy_path)
+    uncaught = result["uncaught"]
+    assert uncaught["n_uncaught"] == 1  # only the benign read_file case slips through
+
+    cases = result["uncaught_cases"]
+    assert len(cases) == 1
+    case = cases[0]
+    assert case["injection_task_id"] == "i4"
+    assert case["tools"] == ["read_file"]
+    assert case["category"] == "read/query via in-scope read tools"
+    assert "in-scope" in case["reason"]
+
+    # category summary reconciles with the per-case list
+    assert uncaught["by_category"] == {"read/query via in-scope read tools": 1}
+
+
 def test_case_tripping_both_is_not_credited_to_policy_only(policy_path):
     # The load-bearing guard against the short-circuit bug: a both-surface case
     # lands in caught_by_both, never inflating policy-only.
