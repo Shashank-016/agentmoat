@@ -190,8 +190,8 @@ def _print_summary(results: dict) -> None:
         f"({c['caught']}/{fw['n_security_cases']} security cases)"
     )
     print(
-        f"    by policy (out-of-scope tool): {c['caught_by_policy']}   "
-        f"by argument constraint: {c['caught_by_constraint']}"
+        f"    attribution (disjoint): policy-only={c['caught_by_policy_only']}   "
+        f"constraint-only={c['caught_by_constraint_only']}   both={c['caught_by_both']}"
     )
     print(
         f"  FPR          {_fmt_pct(fp['false_positive_rate'])}  "

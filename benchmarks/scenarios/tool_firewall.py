@@ -31,28 +31,34 @@ def run(data: AgentDojoData, policy_path: str) -> dict[str, Any]:
     engine = ToolPolicyEngine(policy_path=policy_path)
 
     # --- Catch rate over security (user_task x injection_task) cases ---
+    #
+    # Policy and constraints are evaluated *independently* for every call — we
+    # never let a policy block short-circuit the constraint check — then each
+    # caught case is attributed to a disjoint bucket (policy-only /
+    # constraint-only / both), so neither surface can silently starve the other
+    # of credit for cases that trip both.
     n_cases = len(data.security_cases)
     caught = 0
-    caught_by_policy = 0
-    caught_by_constraint = 0
+    caught_by_policy_only = 0
+    caught_by_constraint_only = 0
+    caught_by_both = 0
 
     for case in data.security_cases:
-        blocked = False
         by_policy = False
         by_constraint = False
         for call in case.attack_calls:
             if not engine.check(case.agent_id, call.tool).allowed:
-                blocked = True
                 by_policy = True
             if engine.check_arguments(case.agent_id, call.tool, call.args):
-                blocked = True
                 by_constraint = True
-        if blocked:
+        if by_policy and by_constraint:
+            caught_by_both += 1
+        elif by_policy:
+            caught_by_policy_only += 1
+        elif by_constraint:
+            caught_by_constraint_only += 1
+        if by_policy or by_constraint:
             caught += 1
-        if by_policy:
-            caught_by_policy += 1
-        if by_constraint:
-            caught_by_constraint += 1
 
     # --- False positives over benign ground-truth calls ---
     n_benign_calls = 0
@@ -81,8 +87,14 @@ def run(data: AgentDojoData, policy_path: str) -> dict[str, Any]:
         "catch": {
             "caught": caught,
             "catch_rate": (caught / n_cases) if n_cases else None,
-            "caught_by_policy": caught_by_policy,
-            "caught_by_constraint": caught_by_constraint,
+            "caught_by_policy_only": caught_by_policy_only,
+            "caught_by_constraint_only": caught_by_constraint_only,
+            "caught_by_both": caught_by_both,
+            # Totals per surface (overlapping): policy-only + both, etc. Handy
+            # for "how much does each surface contribute overall" without
+            # re-deriving from the disjoint buckets.
+            "caught_total_policy": caught_by_policy_only + caught_by_both,
+            "caught_total_constraint": caught_by_constraint_only + caught_by_both,
         },
         "false_positives": {
             "n_benign_calls": n_benign_calls,
