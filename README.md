@@ -375,6 +375,38 @@ off-host replication for full chain-of-custody guarantees.
 
 ---
 
+## Secret & PII redaction
+
+AgentMoat observes raw LLM messages, tool arguments, and responses — which routinely carry
+secrets you don't want copied into the audit trail or shown on the dashboard. Every event
+payload is therefore **redacted before it is persisted**: `redact()` runs inside
+`make_payload()`, so the SQLite store, the JSONL audit log, and the dashboard only ever see
+masked values. It walks nested dicts/lists and replaces recognizable secrets/PII with a
+`«REDACTED:<kind>»` placeholder, and runs *before* truncation so a secret can't dodge the
+pattern by landing on the truncation boundary.
+
+What it catches out of the box: OpenAI-style API keys, AWS access key IDs, GitHub tokens,
+JWTs, PEM private-key blocks, and email addresses.
+
+```python
+from agentmoat.events import make_payload
+
+make_payload(message="my key is sk-ABCDEFGHIJ1234567890abcdef")
+# {'message': 'my key is «REDACTED:openai_api_key»'}
+```
+
+Redaction is **on by default**. Disable it for local debugging via the environment —
+`AGENTMOAT_REDACT=0` (also accepts `false`/`no`/`off`) — or programmatically, which takes
+precedence over the env var:
+
+```python
+from agentmoat.redaction import set_redaction_enabled
+
+set_redaction_enabled(False)  # raw payloads; True to force on, None to fall back to the env var
+```
+
+---
+
 ## Running the API + Dashboard
 
 ```bash
