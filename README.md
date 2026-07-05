@@ -74,6 +74,23 @@ and the action.
 > and AgentDojo `v1`. Reproduce with the steps in [`benchmarks/README.md`](benchmarks/README.md);
 > the exact commit is recorded in `results/latest.json`.
 
+## Performance overhead
+
+The per-call cost AgentMoat adds is sub-millisecond and dwarfed by the LLM/API round-trip it
+sits in front of (which it does not change). Measured with `python benchmarks/overhead.py`:
+
+| What | p50 | p95 |
+|------|-----|-----|
+| Injection scan per message (rule mode) | ~0.09 ms | ~0.15 ms |
+| Argument-constraint check per tool call | ~0.01 ms | ~0.02 ms |
+| End-to-end MCP proxy overhead per intercepted call | ~0.10 ms | ~0.16 ms |
+
+The MCP-proxy row is the delta between a full proxied `tools/call` (request parse + injection +
+argument constraints + tool policy + trust + event emission) and a direct upstream call, using a
+zero-cost mock upstream — so it reflects AgentMoat's interception cost alone, not real
+tool-server or transport latency. Numbers measured on an AMD Ryzen 5 5600H (CPython 3.10,
+Windows); they exclude the LLM/API call and the ~80 MB optional embedding model (off by default).
+
 ## Install
 
 ```bash
