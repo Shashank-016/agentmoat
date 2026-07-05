@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "generated_at": "2026-06-15T13:46:31.405211+00:00",
+  "generated_at": "2026-07-05T13:31:55.815529+00:00",
   "git": {
-    "commit": "8fe14af3727a3b4337f0438aef3f0a27df8604e1",
-    "commit_short": "8fe14af",
+    "commit": "cd4267794d85631c31ebe56c03863474f8ee6c33",
+    "commit_short": "cd42677",
     "dirty": "no"
   },
   "quick_mode": false,
@@ -27,15 +27,189 @@
         "caught": 14,
         "false_positives": 0,
         "catch_rate": 0.053231939163498096,
-        "false_positive_rate": 0.0
+        "false_positive_rate": 0.0,
+        "by_language": {
+          "en": {
+            "n_attacks": 157,
+            "n_benign": 198,
+            "caught": 14,
+            "false_positives": 0,
+            "catch_rate": 0.08917197452229299,
+            "false_positive_rate": 0.0
+          },
+          "de": {
+            "n_attacks": 88,
+            "n_benign": 177,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": 0.0,
+            "false_positive_rate": 0.0
+          },
+          "es": {
+            "n_attacks": 5,
+            "n_benign": 2,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": 0.0,
+            "false_positive_rate": 0.0
+          },
+          "af": {
+            "n_attacks": 1,
+            "n_benign": 5,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": 0.0,
+            "false_positive_rate": 0.0
+          },
+          "nl": {
+            "n_attacks": 1,
+            "n_benign": 4,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": 0.0,
+            "false_positive_rate": 0.0
+          },
+          "id": {
+            "n_attacks": 1,
+            "n_benign": 3,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": 0.0,
+            "false_positive_rate": 0.0
+          },
+          "ro": {
+            "n_attacks": 0,
+            "n_benign": 3,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": null,
+            "false_positive_rate": 0.0
+          },
+          "da": {
+            "n_attacks": 0,
+            "n_benign": 3,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": null,
+            "false_positive_rate": 0.0
+          },
+          "sv": {
+            "n_attacks": 0,
+            "n_benign": 3,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": null,
+            "false_positive_rate": 0.0
+          },
+          "hr": {
+            "n_attacks": 2,
+            "n_benign": 0,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": 0.0,
+            "false_positive_rate": null
+          },
+          "fr": {
+            "n_attacks": 2,
+            "n_benign": 0,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": 0.0,
+            "false_positive_rate": null
+          },
+          "cy": {
+            "n_attacks": 1,
+            "n_benign": 0,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": 0.0,
+            "false_positive_rate": null
+          },
+          "lt": {
+            "n_attacks": 0,
+            "n_benign": 1,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": null,
+            "false_positive_rate": 0.0
+          },
+          "tl": {
+            "n_attacks": 1,
+            "n_benign": 0,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": 0.0,
+            "false_positive_rate": null
+          },
+          "ru": {
+            "n_attacks": 1,
+            "n_benign": 0,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": 0.0,
+            "false_positive_rate": null
+          },
+          "unknown": {
+            "n_attacks": 1,
+            "n_benign": 0,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": 0.0,
+            "false_positive_rate": null
+          },
+          "sl": {
+            "n_attacks": 1,
+            "n_benign": 0,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": 0.0,
+            "false_positive_rate": null
+          },
+          "it": {
+            "n_attacks": 1,
+            "n_benign": 0,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": 0.0,
+            "false_positive_rate": null
+          }
+        },
+        "english_vs_non_english": {
+          "english": {
+            "n_attacks": 157,
+            "n_benign": 198,
+            "caught": 14,
+            "false_positives": 0,
+            "catch_rate": 0.08917197452229299,
+            "false_positive_rate": 0.0
+          },
+          "non_english": {
+            "n_attacks": 106,
+            "n_benign": 201,
+            "caught": 0,
+            "false_positives": 0,
+            "catch_rate": 0.0,
+            "false_positive_rate": 0.0
+          }
+        }
       },
       "embeddings": {
         "n_attacks": 263,
         "n_benign": 399,
-        "caught": 14,
-        "false_positives": 0,
-        "catch_rate": 0.053231939163498096,
-        "false_positive_rate": 0.0
+        "caught_by_rules_only": 14,
+        "caught_by_embeddings_only": 0,
+        "caught_by_both": 0,
+        "combined_caught": 14,
+        "combined_catch_rate": 0.053231939163498096,
+        "embeddings_added_catches": 0,
+        "max_attack_similarity": 0.629,
+        "embedding_threshold": 0.82,
+        "false_positives": {
+          "combined": 0,
+          "by_rule": 0,
+          "by_embedding": 0,
+          "false_positive_rate": 0.0
+        }
       }
     },
     "tool_firewall": {
@@ -47,8 +221,11 @@
       "catch": {
         "caught": 524,
         "catch_rate": 0.8604269293924466,
-        "caught_by_policy": 524,
-        "caught_by_constraint": 0
+        "caught_by_policy_only": 524,
+        "caught_by_constraint_only": 0,
+        "caught_by_both": 0,
+        "caught_total_policy": 524,
+        "caught_total_constraint": 0
       },
       "false_positives": {
         "n_benign_calls": 339,
@@ -56,20 +233,29 @@
         "false_positive_rate": 0.0,
         "blocked_by_policy": 0,
         "blocked_by_constraint": 0
+      },
+      "uncaught": {
+        "n_uncaught": 85,
+        "by_category": {
+          "financial action via in-scope transaction tools": 41,
+          "exfiltration/comms via in-scope send/message tools": 16,
+          "state change via in-scope write tools": 16,
+          "read/query via in-scope read tools": 12
+        }
       }
     },
     "latency": {
       "iterations": 2000,
       "rule_based": {
-        "p50_ms": 0.0971,
-        "p95_ms": 0.1724,
-        "mean_ms": 0.108
+        "p50_ms": 0.1037,
+        "p95_ms": 0.2264,
+        "mean_ms": 0.1295
       },
       "embeddings": {
         "iterations": 100,
-        "p50_ms": 22.7773,
-        "p95_ms": 25.5271,
-        "mean_ms": 22.859
+        "p50_ms": 27.3858,
+        "p95_ms": 33.8179,
+        "mean_ms": 27.752
       }
     }
   }
