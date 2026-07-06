@@ -473,7 +473,7 @@ set_redaction_enabled(False)  # raw payloads; True to force on, None to fall bac
      feed with a few critical/warning events visible (run examples/langgraph_demo.py first
      to populate it). ~1600px wide works well; see the instructions printed at the end of
      the launch-prep run. This <img> intentionally 404s until that file is committed. -->
-<img src="docs/dashboard.png" alt="AgentMoat dashboard — live security event feed with severity badges and a per-session timeline" width="900">
+<!-- <img src="docs/dashboard.png" alt="AgentMoat dashboard — live security event feed with severity badges and a per-session timeline" width="900"> -->
 
 ```bash
 # 1. Install
