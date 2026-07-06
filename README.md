@@ -106,6 +106,27 @@ doesn't.
 > and AgentDojo `v1`. Reproduce with the steps in [`benchmarks/README.md`](benchmarks/README.md);
 > the exact commit is recorded in `results/latest.json`.
 
+## "Can't I just not bind the tool?"
+
+The strongest objection to AgentMoat is that this is already solved: bind each agent only the
+tools it needs at the framework level and you're done. It's a fair point, and our own benchmark
+makes it — all 524 firewall catches (the full 86.0%) were out-of-scope-tool *policy* catches,
+denying a tool the task never needed. Careful tool binding would have prevented every one. Read
+the 86.0% as evidence for least-privilege as a principle, not for this proxy as the only place to
+implement it.
+
+What binding *cannot* do, and where the proxy earns its place:
+
+- **Argument-level constraints on tools the agent must have.** Binding is binary — the tool is in
+  or out — but the risk usually lives in the arguments: which path, which URL, which recipient.
+- **Enforcement from outside the agent's codebase.** One choke point a platform owner controls,
+  instead of trusting every agent's code to stay correctly configured — the same reason you run a
+  network firewall even when every host already has its own rules.
+- **A runtime control plane binding doesn't give you:** tamper-evident audit of the calls you
+  *allowed*, human-in-the-loop approval, rate limits, and a kill switch.
+
+See [THREAT_MODEL.md](THREAT_MODEL.md) for exactly where each of these holds and where it doesn't.
+
 ## Performance overhead
 
 The per-call cost AgentMoat adds is sub-millisecond and dwarfed by the LLM/API round-trip it
